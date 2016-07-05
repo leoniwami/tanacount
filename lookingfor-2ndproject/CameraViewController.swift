@@ -1,7 +1,13 @@
 import UIKit
 import AVFoundation
 
-class CameraViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
+struct information {
+    var images: UIImage?
+    var textmessages: String?
+    var recordmessages: NSURL?
+}
+
+class CameraViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     
     @IBOutlet var cameraView : UIImageView!
     @IBOutlet var takepicture : UIButton!
@@ -17,18 +23,15 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     let fileName = "sample.caf"
     var monoURL: NSURL!
     
+    //NSUserDefaults
+    let allinformations: NSUserDefaults = NSUserDefaults.standardUserDefaults()
+    
     @IBOutlet var recordButton: UIButton!
     @IBOutlet var playButton: UIButton!
     @IBOutlet var pauseButton: UIButton!
     @IBOutlet var stopButton: UIButton!
     
     @IBOutlet var textforthing: UITextField!
-    
-    struct information {
-        var images: UIImage?
-        var textmessages: String?
-        var recordmessages: NSURL?
-    }
     
 //    var mono: information!
 //    var momo = information()
@@ -37,6 +40,13 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setupAudioRecorder()
+        textforthing.delegate = self
+    }
+    
+    //text
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        textforthing.resignFirstResponder()
+        return true
     }
     
     // カメラの撮影開始
@@ -91,6 +101,17 @@ class CameraViewController: UIViewController, UIImagePickerControllerDelegate, U
         
         monoArray.append(mono1)
         print(monoArray)
+        
+        allinformations.setObject(monoArray as? AnyObject, forKey: "openinformation")
+        
+        let alert: UIAlertController = UIAlertController(title: "保存完了", message: "すべてが保存完了いたしました。", preferredStyle: .Alert)
+        self.presentViewController(alert, animated: true) { () -> Void in
+            let delay = 1.0 * Double(NSEC_PER_SEC)
+            let time  = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+            dispatch_after(time, dispatch_get_main_queue(), {
+                self.dismissViewControllerAnimated(true, completion: nil)
+            })
+        }
     }
     
     // 書き込み完了結果の受け取り

@@ -11,10 +11,15 @@ import UIKit
 class lookforViewController: UIViewController {
     
     @IBOutlet var collectionview: UICollectionView!
-
+    
+    let allinformations: NSUserDefaults = NSUserDefaults.standardUserDefaults()
+    var monoArray : NSMutableArray = [0]
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        monoArray = allinformations.objectForKey("openinformation") as! NSMutableArray
+        print("-----------")
         
     }
 
@@ -28,7 +33,8 @@ class lookforViewController: UIViewController {
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell:lineupcell = collectionView.dequeueReusableCellWithReuseIdentifier("photoandvoice", forIndexPath: indexPath) as! lineupcell
         cell.datecell.text = "date"
-        cell.imgcell.image = UIImage(named: "IMG_6152.JPG")
+        let lineup = monoArray[indexPath.row] as! information
+        cell.imgcell.image = lineup.images
         return cell
     }
     
@@ -39,7 +45,7 @@ class lookforViewController: UIViewController {
     
     // 表示するセルの数
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 100
+        return monoArray.count
     }
     
     //size
