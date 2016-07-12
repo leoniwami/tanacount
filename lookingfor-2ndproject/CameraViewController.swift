@@ -1,10 +1,11 @@
 import UIKit
 import AVFoundation
+import RealmSwift
 
-struct information {
-    var images: UIImage?
-    var textmessages: String?
-    var recordmessages: NSURL?
+class information: Object {
+    var images: NSData? = nil
+    var textmessages: String = ""
+    var recordmessages: String? = nil
 }
 
 class CameraViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
@@ -33,8 +34,8 @@ class CameraViewController: UIViewController, UITextFieldDelegate, UIImagePicker
     
     @IBOutlet var textforthing: UITextField!
     
-//    var mono: information!
-//    var momo = information()
+    //    var mono: information!
+    //    var momo = information()
     var monoArray = [information]()
     
     override func viewDidLoad() {
@@ -84,7 +85,7 @@ class CameraViewController: UIViewController, UITextFieldDelegate, UIImagePicker
     
     // 写真を保存
     @IBAction func savePic(sender : AnyObject) {
-        var mono1 = information()
+        let mono1 = information()
         let image: UIImage? = cameraView.image
         print(image)
         
@@ -92,17 +93,24 @@ class CameraViewController: UIViewController, UITextFieldDelegate, UIImagePicker
             // iphoneのアルバムに保存
             UIImageWriteToSavedPhotosAlbum(image!, self, #selector(CameraViewController.image(_:didFinishSavingWithError:contextInfo:)), nil)
             
-            //
-            mono1.images = cameraView.image!
+            
+            //          mono1.images = cameraView.image!
+            mono1.images = imageChanger(cameraView.image!)
         }
-    
-        mono1.textmessages = textforthing.text
-        mono1.recordmessages = monoURL
+        
+        mono1.textmessages = textforthing.text!
+        mono1.recordmessages = String(monoURL)
         
         monoArray.append(mono1)
         print(monoArray)
         
-        allinformations.setObject(monoArray as? AnyObject, forKey: "openinformation")
+        //        allinformations.setObject(monoArray as? AnyObject, forKey: "openinformation")
+        
+        let realm = try! Realm()
+        
+        try! realm.write {
+            realm.add(mono1)
+        }
         
         let alert: UIAlertController = UIAlertController(title: "保存完了", message: "すべてが保存完了いたしました。", preferredStyle: .Alert)
         self.presentViewController(alert, animated: true) { () -> Void in
@@ -191,5 +199,12 @@ class CameraViewController: UIViewController, UITextFieldDelegate, UIImagePicker
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    func imageChanger(image:UIImage) -> NSData? {
+        
+        //画像をNSDataに変換
+        let data:NSData = UIImagePNGRepresentation(image)!
+        return data
     }
 }

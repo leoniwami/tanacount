@@ -7,19 +7,21 @@
 //
 
 import UIKit
+import RealmSwift
 
 class lookforViewController: UIViewController {
     
     @IBOutlet var collectionview: UICollectionView!
     
-    let allinformations: NSUserDefaults = NSUserDefaults.standardUserDefaults()
+//    let allinformations: NSUserDefaults = NSUserDefaults.standardUserDefaults()
     var monoArray : NSMutableArray = [0]
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        monoArray = allinformations.objectForKey("openinformation") as! NSMutableArray
-        print("-----------")
+//        monoArray = allinformations.objectForKey("openinformation") as! NSMutableArray
+        let realm = try! Realm()
+        let infoArray = realm.objects(information)
         
     }
 
@@ -33,8 +35,9 @@ class lookforViewController: UIViewController {
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         let cell:lineupcell = collectionView.dequeueReusableCellWithReuseIdentifier("photoandvoice", forIndexPath: indexPath) as! lineupcell
         cell.datecell.text = "date"
-        let lineup = monoArray[indexPath.row] as! information
-        cell.imgcell.image = lineup.images
+//        let lineup = monoArray[indexPath.row] as! information
+        let lineup = infoArray[indexPath.row] as! information
+        cell.imgcell.image = UIImage(data:lineup.images!)
         return cell
     }
     
@@ -53,6 +56,13 @@ class lookforViewController: UIViewController {
         let width: CGFloat = view.frame.width / 2 - 2
         let height: CGFloat = width
         return CGSize(width: width, height: height)
+    }
+    
+    //StringをUIImageに変換する
+    func nsdatatouiimage(imageNSData:NSData) -> UIImage? {
+        let image: UIImage? = UIImage(data: imageNSData)
+        return image
+        
     }
     
 
