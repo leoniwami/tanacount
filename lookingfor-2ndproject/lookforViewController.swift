@@ -13,6 +13,11 @@ class lookforViewController: UIViewController {
     
     @IBOutlet var collectionview: UICollectionView!
     
+    
+    var num: Int!
+    
+    var array = []
+    
 //    let allinformations: NSUserDefaults = NSUserDefaults.standardUserDefaults()
     var monoArray : NSMutableArray = [0]
     
@@ -22,7 +27,15 @@ class lookforViewController: UIViewController {
 //        monoArray = allinformations.objectForKey("openinformation") as! NSMutableArray
         let realm = try! Realm()
         let infoArray = realm.objects(information)
+        print("11111111111")
+        print(infoArray)
+        print("22222222222")
         
+        let info001: information = infoArray[3]
+        
+        print(info001)
+        print(info001["textmessages"])
+//        array = infoArray as NSArray
     }
 
     override func didReceiveMemoryWarning() {
@@ -36,8 +49,10 @@ class lookforViewController: UIViewController {
         let cell:lineupcell = collectionView.dequeueReusableCellWithReuseIdentifier("photoandvoice", forIndexPath: indexPath) as! lineupcell
         cell.datecell.text = "date"
 //        let lineup = monoArray[indexPath.row] as! information
-        let lineup = infoArray[indexPath.row] as! information
-        cell.imgcell.image = UIImage(data:lineup.images!)
+//        let infoArray = realm.objects(information)
+        
+//        let lineup = infoArray[indexPath.row] as! information
+//        cell.imgcell.image = UIImage(data:lineup.images!)
         return cell
     }
     
@@ -48,7 +63,7 @@ class lookforViewController: UIViewController {
     
     // 表示するセルの数
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return monoArray.count
+        return 1 //infoArray.count
     }
     
     //size
