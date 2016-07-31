@@ -1,12 +1,7 @@
 import UIKit
 import AVFoundation
 import RealmSwift
-
-class information: Object {
-    var images: NSData? = nil
-    var textmessages: String = ""
-    var recordmessages: String? = nil
-}
+import SwiftFilePath
 
 class CameraViewController: UIViewController, UITextFieldDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate{
     
@@ -14,29 +9,19 @@ class CameraViewController: UIViewController, UITextFieldDelegate, UIImagePicker
     @IBOutlet var takepicture : UIButton!
     @IBOutlet var savepicture : UIButton!
     
-    // file操作をするときに役立つNSFileManager
-    // 録音したファイルをDocmentsディレクトリに保存しています。
-    // 他にもtmpディレクトリやLibrary/Cachesディレクトリなんかがあるので、
-    // 興味あればググってください
     let fileManager = NSFileManager()
     var audioRecorder: AVAudioRecorder?
     var audioPlayer: AVAudioPlayer?
-    let fileName = "sample.caf"
-    var monoURL: NSURL!
+    var messageURL: String!
+    var pictureURL: NSURL!
     
     //NSUserDefaults
     let allinformations: NSUserDefaults = NSUserDefaults.standardUserDefaults()
     
     @IBOutlet var recordButton: UIButton!
-    @IBOutlet var playButton: UIButton!
-    @IBOutlet var pauseButton: UIButton!
     @IBOutlet var stopButton: UIButton!
     
     @IBOutlet var textforthing: UITextField!
-    
-    //    var mono: information!
-    //    var momo = information()
-    var monoArray = [information]()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,11 +37,8 @@ class CameraViewController: UIViewController, UITextFieldDelegate, UIImagePicker
     
     // カメラの撮影開始
     @IBAction func cameraStart(sender : AnyObject) {
-        
         let sourceType:UIImagePickerControllerSourceType = UIImagePickerControllerSourceType.Camera
-        // カメラが利用可能かチェック
         if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.Camera){
-            // インスタンスの作成
             let cameraPicker = UIImagePickerController()
             cameraPicker.sourceType = sourceType
             cameraPicker.delegate = self
@@ -70,7 +52,6 @@ class CameraViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
             cameraView.contentMode = .ScaleAspectFit
             cameraView.image = pickedImage
-            
         }
         
         //閉じる処理
@@ -82,62 +63,38 @@ class CameraViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         picker.dismissViewControllerAnimated(true, completion: nil)
     }
     
-    
-    // 写真を保存
+    // すべてを保存
     @IBAction func savePic(sender : AnyObject) {
-        let mono1 = information()
-        let image: UIImage? = cameraView.image
-        print(image)
         
-        if image != nil {
-            // iphoneのアルバムに保存
-            UIImageWriteToSavedPhotosAlbum(image!, self, #selector(CameraViewController.image(_:didFinishSavingWithError:contextInfo:)), nil)
+        let information = Information()
+        let image: UIImage? = cameraView.image
+        if let photoData = UIImagePNGRepresentation(image!) {
+            let uuid = NSUUID().UUIDString
+            let photoName = "\(uuid).png"
+            let path = Path.documentsDir[photoName].asString
+            if photoData.writeToFile(path, atomically: true) {
+                let alertController = UIAlertController(title: "保存完了", message: "保存が完了しました。", preferredStyle: UIAlertControllerStyle.Alert)
+                let okAction = UIAlertAction(title: "おーけー", style: UIAlertActionStyle.Default) { _ in
+                }
+                alertController.addAction(okAction)
+                self.presentViewController(alertController, animated: true, completion: nil)
+            } else {
+                print("Error")
+            }
             
-            
-            //          mono1.images = cameraView.image!
-            mono1.images = imageChanger(cameraView.image!)
+            information.images = uuid
         }
         
-        mono1.textmessages = textforthing.text!
-        mono1.recordmessages = String(monoURL)
-        
-        monoArray.append(mono1)
-        print(monoArray)
-        
-        //        allinformations.setObject(monoArray as? AnyObject, forKey: "openinformation")
+        information.textmessages = textforthing.text!
+        information.recordmessages = messageURL
         
         let realm = try! Realm()
         
         try! realm.write {
-            realm.add(mono1)
+            realm.add(information)
         }
         
-        let alert: UIAlertController = UIAlertController(title: "保存完了", message: "すべてが保存完了いたしました。", preferredStyle: .Alert)
-        self.presentViewController(alert, animated: true) { () -> Void in
-            let delay = 1.0 * Double(NSEC_PER_SEC)
-            let time  = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-            dispatch_after(time, dispatch_get_main_queue(), {
-                self.dismissViewControllerAnimated(true, completion: nil)
-            })
-        }
-    }
-    
-    // 書き込み完了結果の受け取り
-    func image(image: UIImage, didFinishSavingWithError error: NSError!, contextInfo: UnsafeMutablePointer<Void>) {
-        print("書き込み完了結果の受け取り")
         
-    }
-    
-    // アルバムを表示
-    @IBAction func showAlbum(sender : AnyObject) {
-        let sourceType:UIImagePickerControllerSourceType = UIImagePickerControllerSourceType.PhotoLibrary
-        if UIImagePickerController.isSourceTypeAvailable(UIImagePickerControllerSourceType.PhotoLibrary){
-            // インスタンスの作成
-            let cameraPicker = UIImagePickerController()
-            cameraPicker.sourceType = sourceType
-            cameraPicker.delegate = self
-            self.presentViewController(cameraPicker, animated: true, completion: nil)
-        }
     }
     
     // 録音ボタンを押した時の挙動
@@ -145,17 +102,8 @@ class CameraViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         audioRecorder?.record()
     }
     
-    @IBAction func pushPauseButton(sender: AnyObject) {
-        audioRecorder?.pause()
-    }
-    
     @IBAction func pushStopButton(sender: AnyObject) {
         audioRecorder?.stop()
-    }
-    
-    // 再生ボタンを押した時の挙動
-    @IBAction func pushPlayButton(sender: AnyObject) {
-        self.play()
     }
     
     // 録音するために必要な設定を行う
@@ -171,40 +119,18 @@ class CameraViewController: UIViewController, UITextFieldDelegate, UIImagePicker
             AVNumberOfChannelsKey: 2,
             AVSampleRateKey: 44100.0
         ]
+        let uuid = NSUUID().UUIDString
+        let recordPath = Path.documentsDir["\(uuid).caf"].asString
+        messageURL = "\(uuid).caf"
         do {
-            try audioRecorder = AVAudioRecorder(URL: self.documentFilePath(), settings: recordSetting)
+            try audioRecorder = AVAudioRecorder(URL: NSURL(string: recordPath)!, settings: recordSetting)
         } catch {
             print("初期設定でerror出たよ(-_-;)")
         }
-    }
-    // 再生
-    func play() {
-        do {
-            try audioPlayer = AVAudioPlayer(contentsOfURL: self.documentFilePath())
-        } catch {
-            print("再生時にerror出たよ(´・ω・｀)")
-        }
-        audioPlayer?.play()
-        
-    }
-    // 録音するファイルのパスを取得(録音時、再生時に参照)
-    // swift2からstringByAppendingPathComponentが使えなくなったので少し面倒
-    func documentFilePath()-> NSURL {
-        let urls = fileManager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask) as [NSURL]
-        let dirURL = urls[0]
-        monoURL = dirURL
-        return dirURL.URLByAppendingPathComponent(fileName)
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-    
-    func imageChanger(image:UIImage) -> NSData? {
-        
-        //画像をNSDataに変換
-        let data:NSData = UIImagePNGRepresentation(image)!
-        return data
     }
 }

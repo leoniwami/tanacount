@@ -19,20 +19,30 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>SwiftFilePath.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>15E565B3A0DD8398AA2945E822243351</key>
+		<key>717D633E68756AFCEAF130D08482DD1B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>27E7CB6C2A215B10494A38E0C899FD78</key>
+		<key>7ED322DD39AB5ABEF023D9BCF0CDA1D0</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>985E61B81755B1434EB37751D0EBD540</key>
+		<key>828B6A5D448090AD93A2E5FF9F7D048A</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B03989232579B9F1D1B56322B663F1BE</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -86,8 +86,10 @@ strip_invalid_archs() {
 if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "Pods-lookingfor-2ndproject/Realm.framework"
   install_framework "Pods-lookingfor-2ndproject/RealmSwift.framework"
+  install_framework "Pods-lookingfor-2ndproject/SwiftFilePath.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "Pods-lookingfor-2ndproject/Realm.framework"
   install_framework "Pods-lookingfor-2ndproject/RealmSwift.framework"
+  install_framework "Pods-lookingfor-2ndproject/SwiftFilePath.framework"
 fi
