@@ -20,6 +20,9 @@ class LookforViewController: UIViewController, UICollectionViewDataSource, UICol
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let audioSession = AVAudioSession.sharedInstance()
+        try! audioSession.setCategory(AVAudioSessionCategoryAmbient)
+        try! audioSession.setActive(true)
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -30,7 +33,7 @@ class LookforViewController: UIViewController, UICollectionViewDataSource, UICol
         collectionview.delegate = self
         collectionview.dataSource = self
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -43,6 +46,8 @@ class LookforViewController: UIViewController, UICollectionViewDataSource, UICol
         
         let imagePath = Path.documentsDir.content(infoarray[indexPath.row].images).asString
         cell.imageView.image = UIImage(contentsOfFile: imagePath)!
+        let angle:CGFloat = CGFloat((90.0 * M_PI) / 180.0)
+        cell.imageView.transform = CGAffineTransformMakeRotation(angle)
         cell.titileLabel.text = infoarray[indexPath.row].textmessages
         
         return cell
@@ -63,10 +68,11 @@ class LookforViewController: UIViewController, UICollectionViewDataSource, UICol
         let recordPath = Path.documentsDir.content(infoarray[indexPath.row].recordmessages).asString
         do {
             try audioPlayer = AVAudioPlayer(contentsOfURL: NSURL(string: recordPath)!)
+            audioPlayer!.play()
         } catch {
             print("再生時にerror出たよ(´・ω・｀)")
         }
-        audioPlayer?.play()
-        }
-
+        
+    }
+    
 }

@@ -93,18 +93,29 @@ class CameraViewController: UIViewController, UITextFieldDelegate, UIImagePicker
         try! realm.write {
             realm.add(information)
         }
-        
-        
     }
     
     // 録音ボタンを押した時の挙動
     @IBAction func pushRecordButton(sender: AnyObject) {
         audioRecorder?.record()
+        let alert = UIAlertController(title: "録音", message: "録音中", preferredStyle: .Alert)
+        alert.addAction(
+            UIAlertAction(
+                title: "完了",
+                style: UIAlertActionStyle.Default,
+                handler: {action in
+                    self.audioRecorder?.stop()
+                }
+            )
+        )
+        
+        presentViewController(alert, animated: true, completion: nil)
+
     }
     
-    @IBAction func pushStopButton(sender: AnyObject) {
-        audioRecorder?.stop()
-    }
+//    @IBAction func pushStopButton(sender: AnyObject) {
+//        audioRecorder?.stop()
+//    }
     
     // 録音するために必要な設定を行う
     // viewDidLoad時に行う
