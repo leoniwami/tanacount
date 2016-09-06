@@ -20,6 +20,9 @@
 		B8AD00451CEB2D900090DA80 /* lookingfor_2ndprojectUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8AD00441CEB2D900090DA80 /* lookingfor_2ndprojectUITests.swift */; };
 		B8AD00531CEB2EB70090DA80 /* IMG_6152.JPG in Resources */ = {isa = PBXBuildFile; fileRef = B8AD00521CEB2EB70090DA80 /* IMG_6152.JPG */; };
 		B8CCEDF21D4C4AE700B01495 /* Infomation.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8CCEDF11D4C4AE700B01495 /* Infomation.swift */; };
+		B8EA09471D7EC6B60072E23F /* スクリーンショット 2016-09-06 18.40.57.png in Resources */ = {isa = PBXBuildFile; fileRef = B8EA09461D7EC6B60072E23F /* スクリーンショット 2016-09-06 18.40.57.png */; };
+		B8EA094A1D7ED5C60072E23F /* ShowCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8EA09481D7ED5C60072E23F /* ShowCollectionCell.swift */; };
+		B8EA094B1D7ED5C60072E23F /* ShowCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B8EA09491D7ED5C60072E23F /* ShowCollectionCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -60,6 +63,9 @@
 		B8AD00461CEB2D900090DA80 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B8AD00521CEB2EB70090DA80 /* IMG_6152.JPG */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = IMG_6152.JPG; path = images/IMG_6152.JPG; sourceTree = SOURCE_ROOT; };
 		B8CCEDF11D4C4AE700B01495 /* Infomation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Infomation.swift; sourceTree = "<group>"; };
+		B8EA09461D7EC6B60072E23F /* スクリーンショット 2016-09-06 18.40.57.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "スクリーンショット 2016-09-06 18.40.57.png"; sourceTree = "<group>"; };
+		B8EA09481D7ED5C60072E23F /* ShowCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShowCollectionCell.swift; sourceTree = "<group>"; };
+		B8EA09491D7ED5C60072E23F /* ShowCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShowCollectionCell.xib; sourceTree = "<group>"; };
 		EF94559278A9E30E81CFE14D /* Pods-lookingfor-2ndproject.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-lookingfor-2ndproject.release.xcconfig"; path = "Pods/Target Support Files/Pods-lookingfor-2ndproject/Pods-lookingfor-2ndproject.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -139,9 +145,12 @@
 				B84DF4DF1CFD9CDA00D466C8 /* LookforViewController.swift */,
 				B8AD00281CEB2D900090DA80 /* Main.storyboard */,
 				B8AD00521CEB2EB70090DA80 /* IMG_6152.JPG */,
+				B8EA09461D7EC6B60072E23F /* スクリーンショット 2016-09-06 18.40.57.png */,
 				B8AD002B1CEB2D900090DA80 /* Assets.xcassets */,
 				B8AD002D1CEB2D900090DA80 /* LaunchScreen.storyboard */,
 				B8AD00301CEB2D900090DA80 /* Info.plist */,
+				B8EA09481D7ED5C60072E23F /* ShowCollectionCell.swift */,
+				B8EA09491D7ED5C60072E23F /* ShowCollectionCell.xib */,
 			);
 			path = "lookingfor-2ndproject";
 			sourceTree = "<group>";
@@ -274,7 +283,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B8EA094B1D7ED5C60072E23F /* ShowCollectionCell.xib in Resources */,
 				B8AD002F1CEB2D900090DA80 /* LaunchScreen.storyboard in Resources */,
+				B8EA09471D7EC6B60072E23F /* スクリーンショット 2016-09-06 18.40.57.png in Resources */,
 				B8AD00531CEB2EB70090DA80 /* IMG_6152.JPG in Resources */,
 				B8AD002C1CEB2D900090DA80 /* Assets.xcassets in Resources */,
 				B8AD002A1CEB2D900090DA80 /* Main.storyboard in Resources */,
@@ -350,6 +361,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B8EA094A1D7ED5C60072E23F /* ShowCollectionCell.swift in Sources */,
 				B84DF4E41CFDA9FA00D466C8 /* CameraViewController.swift in Sources */,
 				B860DE4B1D4D98F90062AE21 /* ShowCollectionViewCell.swift in Sources */,
 				B84DF4E01CFD9CDA00D466C8 /* LookforViewController.swift in Sources */,
